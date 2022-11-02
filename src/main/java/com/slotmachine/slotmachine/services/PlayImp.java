@@ -2,18 +2,25 @@ package com.slotmachine.slotmachine.services;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.slotmachine.slotmachine.dao.PlayerDao;
 import com.slotmachine.slotmachine.entities.Players;
+import com.slotmachine.slotmachine.entities.PlayersData;
 import com.slotmachine.slotmachine.entities.Slot;
 
 @Service
 public class PlayImp implements PlayService{
+    @Autowired
+    private PlayerDao pd;
+
 
     static void shuffleArray(int[][] ar)
     {
@@ -32,6 +39,13 @@ public class PlayImp implements PlayService{
     @Override
     public Slot playGame(Players[] p) {
         // TODO Auto-generated method stub
+        Date date = new Date();
+        for(Players p1 : p){
+            System.out.println(p1.getId());
+            PlayersData pyd = new PlayersData(p1);
+            pyd.setDate(date);
+            pd.save(pyd);
+        }
         int total=0;
         int[][] comb = new int[9][9];
         int[][] reqcomb;
